@@ -1,0 +1,59 @@
+<div class="exam-title" *ngIf="_header">{{_header.title}}</div>
+<div class="exam-header" *ngIf="_header">
+  <nz-row alert-body [nzType]="'flex'" [nzJustify]="'space-around'">
+    <nz-col>
+      <span>姓名：{{_header.name}}</span>
+    </nz-col>
+    <nz-col>
+      <span>限時：{{_header.time}}分鐘</span>
+    </nz-col>
+    <nz-col>
+      <span>合格分數：{{_header.passScore}}分</span>
+    </nz-col>
+    <nz-col *ngIf="status === 3">
+      剩餘時間：
+      <span class="left-time">{{leftTime}}</span>
+    </nz-col>
+    <nz-col *ngIf="status === 4">
+      得分：
+      <span [style.color]="lastMark < _header.passScore? 'red': 'green'" [style.fontSize.rem]="2.0">{{lastMark}}</span>
+    </nz-col>
+  </nz-row>
+</div>
+<form [formGroup]="myForm">
+  <nz-card *ngIf="TFList?.length > 0">
+    <nz-card-meta [nzTitle]="title"></nz-card-meta>
+    <ng-template #title>
+      {{prefixMain['TF']}}、 判斷題,總分
+      <span>{{markSets?.TF?.total}}</span>分,每題
+      <span>{{markSets?.TF?.average}}</span>分
+    </ng-template>
+    <app-true-or-false [titlePrefix]="i+1 +'. '" class="question-item" *ngFor="let item of TFList;let i = index" [question]="item"
+      [result]="item.result" [formControlName]="item.ID"></app-true-or-false>
+  </nz-card>
+
+  <nz-card *ngIf="radioList?.length > 0">
+    <nz-card-meta [nzTitle]="title"></nz-card-meta>
+    <ng-template #title>
+      {{prefixMain['radio']}}、 選擇題,總分
+      <span>{{markSets?.radio?.total}}</span>分,每題
+      <span>{{markSets?.radio?.average}}</span>分
+    </ng-template>
+    <app-radio-question [titlePrefix]="i+1 +'. '" class="question-item" *ngFor="let item of radioList;let i = index" [title]="item.TITLE"
+      [radios]="item.optionList" [formControlName]="item.ID" [result]="item.result"></app-radio-question>
+  </nz-card>
+
+  <nz-card *ngIf="checkboxList?.length > 0">
+    <nz-card-meta [nzTitle]="title"></nz-card-meta>
+    <ng-template #title>
+      {{prefixMain['checkbox']}}、 多選題,總分
+      <span>{{markSets?.checkbox?.total}}</span>分,每題
+      <span>{{markSets?.checkbox?.average}}</span>分
+    </ng-template>
+    <app-checkbox-question [titlePrefix]="i+1 +'. '" class="question-item" *ngFor="let item of checkboxList;let i = index" [checkOptions]="item.optionList"
+      [title]="item.TITLE" [result]="item.result" [formControlName]="item.ID"></app-checkbox-question>
+  </nz-card>
+</form>
+<div style="text-align: center; margin: 16px 0" *ngIf="status === 3">
+  <button nz-button type="submit" [nzType]="'primary'" [nzSize]="'large'" (click)="finish()" style="width: 40%">交卷</button>
+</div>

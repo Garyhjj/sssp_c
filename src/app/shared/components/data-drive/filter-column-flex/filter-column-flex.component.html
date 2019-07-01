@@ -1,0 +1,20 @@
+<!-- Modal -->
+
+<nz-modal [nzVisible]="isVisible" [nzContent]="modalContent1" [nzFooter]="footer" [nzTitle]="'pickColumn' | translate" (nzOnCancel)="handleCancelTop($event)">
+    <ng-template #modalContent1>
+        <!-- <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="_log(checkOptionsOne)"></nz-checkbox-group> -->
+        <div class="checkbox-container">
+            <label nz-checkbox *ngFor="let op of checkOptionsOne" [(ngModel)]="op.checked" (ngModelChange)="updateSingleChecked()">
+                <span>{{op.label}}</span>
+            </label>
+        </div>
+    </ng-template>
+    <ng-template #footer>
+        <div>
+            <button nz-button [nzType]="'primary'" (click)="handleOkTop($event)">
+                {{'confirm' | translate}}
+            </button>
+        </div>
+    </ng-template>
+</nz-modal>
+<!-- End Modal -->

@@ -1,0 +1,15 @@
+<app-data-drive [name]="321" (dataDriveInit)="getDataDrive($event)"></app-data-drive>
+
+
+<div style="display:block;text-align:center;margin-top: 16px">
+  <button nz-button type="botton" [nzType]="'primary'" style="width: 20%;margin-right: 16px" [disabled]="!selectedList?.length"
+      (click)="updateRelation()">{{'empi.updateRelation'
+      | translate}}</button> <button nz-button type="botton" [nzType]="'primary'" style="width: 20%;margin-right: 16px"
+      (click)="sendMail()" [nzLoading]="sendingMail" >{{'finish'
+      | translate}}</button>
+</div>
+
+<div>
+  <h2>{{'empi.relation' | translate }}</h2>
+  <app-relation-table [searchAgr]="{file_id: ids}" [callUpdate]="callUpdateRelation" [mutiUpdate]="true" [attchFiles]="_lists"></app-relation-table>
+</div>

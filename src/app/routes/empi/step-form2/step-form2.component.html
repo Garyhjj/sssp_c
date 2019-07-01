@@ -1,0 +1,15 @@
+<form nz-form [formGroup]="myForm" *ngIf="myForm">
+    <div nz-row>
+      <div nz-col [nzSpan]="24" >
+          <nz-form-item>
+              <nz-form-label [nzRequired]="forms[0].isRequired" [nzFor]="forms[0].label" [nzSpan]="8">{{forms[0].label}}</nz-form-label>
+              <nz-form-control nzSpan="14"><app-file-upload formControlName="files"  [maxCount]="9" miAccept='.pdf'
+                 [onSubmit]="callUpload" (uploadSuccess)="afterFileUpload(1,$event)" [uploadFilter]="uploadFilter"
+                (uploadError)="afterFileUpload(2,$event)"></app-file-upload>
+              </nz-form-control>
+                
+            </nz-form-item>
+      </div>
+    </div>
+  </form>
+  

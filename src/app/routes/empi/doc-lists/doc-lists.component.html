@@ -1,0 +1,61 @@
+<page-header>
+
+</page-header>
+
+<div style="padding: 20px 20px; background-color: #fff; min-height: 80vh">
+  <!-- <button nz-button type="botton" [nzType]="'primary'" (click)="setRole('empi_admin')">超级管理员</button>
+    <button nz-button type="botton" [nzType]="'primary'" (click)="setRole('empi_common')">普通用户</button>
+    <button nz-button type="botton" [nzType]="'primary'" (click)="setRole('empi_dc')">DC</button>
+    <button nz-button type="botton" [nzType]="'primary'" (click)="setRole('empi_normal_upload')">一般上传用户</button> -->
+  <app-data-drive [name]="321" (dataDriveInit)="getDataDrive($event)" viewerMinWidth="1750px">
+    <ng-template #actionRef let-data="data">
+      <span>
+        <a (click)="scanPdf(data)" *ngIf="data.APPROVE_FLAG === 'Y' || (data.APPROVE_FLAG !== 'Y' && data.UPLOAD_BY === user.ID) || isAdmin">{{'scan' | translate}}</a>
+        <span [acl]="isNotCommonUser">
+          <ng-container
+            *ngIf="(+data.FILE_CATEGORY === 1 && isNormalUpload && (data.APPROVE_FLAG === 'Y' || (data.APPROVE_FLAG !== 'Y' && data.UPLOAD_BY === user.ID) )) || (data.FILE_CATEGORY === '0' && isDc) || isAdmin">
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="update(data)">{{'alter' | translate}}</a>
+            <ng-container *ngIf="data.ENABLED !== 'N'">
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="disableFile(data)">{{'empi.disabledFile' | translate}}</a>
+            </ng-container>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="changeRelation(data)">{{'empi.changeRelation' | translate}}</a>
+          </ng-container>
+
+          <ng-container *ngIf="data.FILE_CATEGORY === '0' && isNormalUpload">
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="changeRelation(data)">{{'empi.changeRelation' | translate}}</a>
+          </ng-container>
+        </span>
+
+      </span>
+    </ng-template>
+
+    <ng-template #tableCellRef let-data="data" let-property="property">
+      <ng-container *ngIf="['MODEL', 'PART_NO', 'LINE', 'OPERATION_CODE', 'FAMILY_NAME'].indexOf(property) > -1">
+        <div style="max-width: 120px">
+          <div *ngFor="let item of data[property]" style="word-break: break-word;word-wrap: break-word;">{{item}};</div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="property === 'APPROVE_FLAG'">
+        <span>{{(data.APPROVE_FLAG === 'Y'?'empi.signDone': 'empi.signing') | translate}}</span>
+        <div *ngIf="data.APPROVE_FLAG !== 'Y'">({{(data.APPROVE_FLAG === 'N'?data.APPROVER1_EMPNO: data.APPROVER2_EMPNO) |
+          myFlex:
+          {name:'empno',params:['CH(NO)']} | async}})</div>
+      </ng-container>
+    </ng-template>
+
+  </app-data-drive>
+  <div style="display:block;text-align:center;margin-top: 24px" *ngIf="d" [acl]="isNotCommonUser">
+    <button nz-button type="botton" [nzType]="'primary'" style="width: 20%;margin-right: 16px"
+      [disabled]="!selectedList?.length" (click)="updateRelation()">{{'empi.addRelation' | translate}}</button>
+  </div>
+</div>
+
+<div class="my-modal" *ngIf="targetPdf">
+  <app-scan [pdfUrl]="targetPdf" [onKeyDown]="attachFn"></app-scan>
+</div>
+
+<!-- <app-scan></app-scan> -->

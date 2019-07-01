@@ -1,0 +1,63 @@
+:host ::ng-deep i {
+  font-size: 32px;
+  color: #20A0ff;
+}
+
+ :host ::ng-deep .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+
+.layer {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 10;
+}
+
+
+.showImg {
+  width: 80%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  top: -5%;
+}
+
+.showImg .prev {
+  position: absolute;
+  left: -7%;
+  top: 50%;
+  background-color: #f7f7f7;
+  opacity: 0.5;
+  transition: all .8s;
+}
+
+.showImg .next {
+  position: absolute;
+  right: -7%;
+  top: 50%;
+  background-color: #f7f7f7;
+  opacity: 0.5;
+  transition: all .8s;
+}
+
+.showImg .prev:hover,
+.showImg .next:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.showImg .image {
+  max-width: 60vw;
+  max-height: 60vh;
+}

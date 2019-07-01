@@ -1,0 +1,4 @@
+<ng-container *ngIf="dataDrive">
+  <app-data-update *ngIf="type ===1" [opts]="dataDrive" [changeIdx]="changeIdx"></app-data-update>
+  <app-data-search *ngIf="type ===2" [opts]="dataDrive"></app-data-search>
+</ng-container>

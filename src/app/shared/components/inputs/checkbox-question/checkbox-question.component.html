@@ -1,0 +1,9 @@
+<div>
+  <div class="title" [style.fontSize]="fontSize" *ngIf="!result || isTrueAnswer()">{{titlePrefix}}{{title}}</div>
+  <nz-alert [nzType]="'error'" *ngIf="result && !isTrueAnswer()" [nzMessage]="titlePrefix+ title + '  提交答案: '+ yourAnswerString">
+    <!-- <span alert-body [style.fontSize]="fontSize">
+      {{titlePrefix}}{{title}} ({{'提交答案: ' + yourAnswerString }})
+    </span> -->
+  </nz-alert>
+  <nz-checkbox-group [(ngModel)]="checkOptions" (ngModelChange)="updateSingleChecked()" #checkbox></nz-checkbox-group>
+</div>

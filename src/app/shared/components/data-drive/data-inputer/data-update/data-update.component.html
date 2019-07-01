@@ -1,0 +1,26 @@
+<form nz-form [nzLayout]="formLayout" [formGroup]="validateForm" *ngIf="validateForm" #view>
+  <div nz-row [nzGutter]="colNum === 1?0:2">
+    <div nz-col [nzSpan]="colNum?24/colNum:24" *ngFor="let item of columnNameStrings;let i =index">
+      <nz-form-item [class.hide]="inputTypeList[i].isHide">
+        <nz-form-label [nzSpan]="isHorizontal?6:8" style="text-overflow: ellipsis;" [nzRequired]="inputTypeList[i].isRequired">{{inputTypeList[i].label}}
+        </nz-form-label>
+
+        <nz-form-control [nzSpan]="isHorizontal?16:16">
+          <app-dynamic-input [formControlName]="item" [inputOptions]="inputTypeList[i]"></app-dynamic-input>
+
+          <app-file-upload [formControlName]="item" *ngIf="inputTypeList[i]?.type === 'fileUpload'" [maxCount]="inputTypeList[i]?.more?.maxCount"
+            [hideUploadButton]="inputTypeList[i]?.more?.hideUploadButton" [onSubmit]="onSubmit" (uploadSuccess)="afterFileUpload(1,$event)"
+            (uploadError)="afterFileUpload(2,$event)"></app-file-upload>
+          <div nz-form-explain *ngIf="validateForm.controls[item].dirty&&validateForm.controls[item].errors">{{errMes[item]}}</div>
+        </nz-form-control>
+
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div [style.display]="'block'" [style.textAlign]="'center'">
+    <button nz-button type="button" [nzType]="'primary'" [nzLoading]="updating" [disabled]="!validateForm.valid || globalErr"
+      [style.width.%]="40" (click)="submitForm()">確定</button>
+  </div>
+  <div class="global-err">{{globalErr}}</div>
+</form>

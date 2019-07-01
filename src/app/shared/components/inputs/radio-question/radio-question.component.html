@@ -1,0 +1,13 @@
+<div>
+  <div class="title" [style.fontSize]="fontSize" *ngIf="!result || result.trueAnswer === result.yourAnswer">{{titlePrefix}}{{title}}</div>
+  <nz-alert [nzType]="'error'" *ngIf="result && result.trueAnswer !== result.yourAnswer" [nzMessage]="titlePrefix+ title + '  提交答案: '+ yourAnswerString">
+    <!-- <span alert-body [style.fontSize]="fontSize">
+        {{titlePrefix}}{{title}}  ({{'提交答案:  ' + yourAnswerString }})
+      </span> -->
+  </nz-alert>
+  <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="change($event)">
+    <label nz-radio [nzValue]="item[0]" *ngFor="let item of radios">
+      <span [style.fontSize]="fontSize">{{item[1]}}</span>
+    </label>
+  </nz-radio-group>
+</div>

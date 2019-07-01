@@ -1,0 +1,70 @@
+<form nz-form [formGroup]="validateForm" [nzLayout]="formLayout">
+  <nz-row>
+    <ng-container *ngFor="let item of columnNameStrings;let i =index">
+      <nz-col [nzSpan]="8">
+        <div nz-form-item nz-row [style.marginBottom.px]="20" [style.width.%]="100">
+          <div nz-form-label nz-col [nzSpan]="isHorizontal?6:8">
+            <label>{{inputTypeList[i].label}}</label>
+          </div>
+
+
+          <div nz-form-control nz-col [nzSpan]="isHorizontal?16:16">
+
+            <input nz-input [formControlName]="item" [placeholder]="inputTypeList[i].placeHolder" [nzSize]="'large'" *ngIf="inputTypeList[i]?.type === 'text'">
+
+            <textarea nz-input [formControlName]="item" [placeholder]="inputTypeList[i].placeHolder" *ngIf="inputTypeList[i]?.type === 'textarea'"
+              [nzAutosize]="1"></textarea>
+
+            <!-- <nz-select [formControlName]="item" [nzSize]="'large'" [nzPlaceHolder]="inputTypeList[i].placeHolder" *ngIf="inputTypeList[i]?.type === 'select'"
+              [style.minWidth]="'100px'">
+              <nz-option [nzLabel]="item.value" [nzValue]="item.property" *ngFor="let item of inputTypeList[i]?.more?.options"></nz-option>
+            </nz-select> -->
+
+            <app-mx-select [formControlName]="item" *ngIf="inputTypeList[i]?.type === 'select'" [myPlaceHolder]="inputTypeList[i].placeHolder"
+              [options]="inputTypeList[i]?.more?.options" [lazyAPI]="inputTypeList[i]?.more?.lazyAPI" [lazyParams]="inputTypeList[i]?.more?.lazyParams"
+              [lazyAPIUserMes]="inputTypeList[i]?.more?.lazyAPIUserMes"></app-mx-select>
+
+            <!-- <nz-datepicker [formControlName]="item" [nzSize]="'large'" *ngIf="inputTypeList[i]?.type === 'datepicker'" nzShowTime="'hh:mm'" [nzFormat]="'YYYY-MM-DD hh:mm'">
+            </nz-datepicker> -->
+            <app-my-date-picker [formControlName]="item" *ngIf="inputTypeList[i]?.type === 'datePicker'" [myPickerFormat]="inputTypeList[i].more?.pickerFormat"
+              [myFormat]="inputTypeList[i].more?.showFormat" [myShowTime]="inputTypeList[i].more?.showTime" [myPlaceHolder]="inputTypeList[i].placeHolder"
+              [myMode]="inputTypeList[i].more?.showMode"></app-my-date-picker>
+
+
+            <app-my-time-picker [formControlName]="item" *ngIf="inputTypeList[i]?.type === 'timePicker'" [myPickerFormat]="inputTypeList[i].more?.pickerFormat"
+              [myFormat]="inputTypeList[i].more?.showFormat" [myPlaceHolder]="inputTypeList[i].placeHolder">
+            </app-my-time-picker>
+
+            <nz-input-number [formControlName]="item" [nzSize]="'large'" [nzStep]="inputTypeList[i].more?.step" [nzMax]="inputTypeList[i].more?.max"
+              [nzMin]="inputTypeList[i].more?.min" [style.width]="'50%'" *ngIf="inputTypeList[i]?.type === 'number'"></nz-input-number>
+
+            <app-my-cascader [formControlName]="item" *ngIf="inputTypeList[i]?.type === 'cascader'" [myPlaceHolder]="inputTypeList[i].placeHolder"
+              [myOptions]="inputTypeList[i].more?.options" [myCascaderLazySets]="inputTypeList[i].more?.cascaderLazySets" [myProperties]="inputTypeList[i].more?.properties"></app-my-cascader>
+
+            <app-my-switch [formControlName]="item" *ngIf="inputTypeList[i]?.type === 'switch'" [myTrueFormat]="inputTypeList[i]?.trueFormat"
+              [myFalseFormat]="inputTypeList[i]?.falseFormat"></app-my-switch>
+
+            <app-colleague-searcher [formControlName]="item" *ngIf="inputTypeList[i]?.type === 'colleagueSearcher'"></app-colleague-searcher>
+
+            <app-photo-upload [formControlName]="item" *ngIf="inputTypeList[i]?.type === 'photoUpload'" [pickerFormat]="inputTypeList[i]?.more?.pickerFormat"
+              [maxCount]="inputTypeList[i]?.more?.maxCount" [removable]="inputTypeList[i]?.more?.removable" [addable]="inputTypeList[i]?.more?.addable"
+              [scanable]="inputTypeList[i]?.more?.scanable"></app-photo-upload>
+
+            <div nz-form-explain *ngIf="validateForm.controls[item].dirty&&validateForm.controls[item].errors">{{errMes[item]}}</div>
+          </div>
+
+        </div>
+      </nz-col>
+    </ng-container>
+  </nz-row>
+  <nz-row [nzType]="'flex'" [nzJustify]="'center'">
+    <nz-col [nzSpan]="'6'">
+      <button nz-button nz-col type="submit" [nzType]="'primary'" [nzSize]="'large'" [disabled]="!validateForm.valid" (click)="submitForm()">
+        <i class="anticon anticon-search"></i>{{'query' | translate}}</button>
+    </nz-col>
+    <nz-col [nzSpan]="'6'">
+      <button nz-button nz-col [nzType]="'primary'" type="botton" [nzSize]="'large'" (click)="reSet()">
+        <i class="anticon anticon-reload"></i>{{'reset' | translate}}</button>
+    </nz-col>
+  </nz-row>
+</form>

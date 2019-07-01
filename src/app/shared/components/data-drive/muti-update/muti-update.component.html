@@ -1,0 +1,18 @@
+<nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
+  <button nz-button>
+    <i class="anticon anticon-upload"></i>
+    <span>{{'selectFile' | translate}}</span>
+  </button>
+</nz-upload>
+<button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()" [disabled]="fileList.length == 0 || !hasData || dataHaveError"
+  style="margin-top: 16px">
+  {{ (uploading ? 'dealing' : 'submit') | translate }}
+</button>
+
+<button nz-button [nzType]="'primary'" (click)="preview()" [disabled]="fileList.length == 0 || !hasData" style="margin-top: 16px;margin-left: 30px">
+  {{'preview' | translate}}
+</button>
+
+<button nz-button [nzType]="'primary'" (click)="downLoadTemplet()" style="margin-top: 16px;float: right">
+  {{'downLoadTemplate' | translate}}
+</button>

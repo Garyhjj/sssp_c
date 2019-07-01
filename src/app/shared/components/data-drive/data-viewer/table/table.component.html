@@ -1,0 +1,104 @@
+<!-- <nz-table *ngIf="_dataDrive && setDetail" #nzTable [nzScroll]="setDetail.fixedHeader?.enable?{ y: setDetail.fixedHeader.scrollHeight>0?setDetail.fixedHeader.scrollHeight: 300 }:null"
+  [nzDataSource]="tableData.data?tableData.data:[]" [nzPageSize]="setDetail.pageSet.count" [nzBordered]="setDetail.border_y.enable"
+  [nzLoading]="_loading" [nzIsPagination]="setDetail.pageSet.enable" [nzShowFooter]="setDetail.footer.enable" [nzShowTitle]="setDetail.title.enable && !isModal"
+  [nzSize]="setDetail.size" (nzDataChange)="dataChange()" [(nzPageIndex)]="pageIndex" [nzShowTotal]="1"> -->
+<div #myDriveTable>
+  <nz-table *ngIf="_dataDrive && setDetail" #nzTable [nzScroll]="setDetail.fixedHeader?.enable?{ y: setDetail.fixedHeader.scrollHeight?setDetail.fixedHeader.scrollHeight: '300px',x:cacalXWidth(minWidth) }:minWidth?{x:cacalXWidth(minWidth)}:null"
+    [nzData]="tableData.data?tableData.data:[]" [nzPageSize]="setDetail.pageSet.count" [nzBordered]="setDetail.border_y.enable"
+    [nzLoading]="_loading" [nzFrontPagination]="setDetail.pageSet.enable" [nzShowPagination]="setDetail.pageSet.enable"
+    [nzFooter]="tableData.endPagination?.enable? loadMore: null" [nzTitle]="null" [nzSize]="setDetail.size"
+    [(nzPageIndex)]="pageIndex" [nzShowTotal]="totalRef">
+    <!-- <span nz-table-title>{{tableSet.title}}</span> -->
+    <thead nz-thead (nzSortChange)="sort($event)">
+      <tr>
+        <th nzShowCheckbox  [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" nzLeft="0px"
+          (nzCheckedChange)="checkAll($event)" *ngIf="setDetail.showCheckbox" [nzWidth]="setDetail.fixedHeader?.enable &&setDetail.fixedHeader?.width && setDetail.fixedHeader?.width[i]?setDetail.fixedHeader?.width[i]:!setDetail.fixedHeader?'':'2%'"></th>
+        <th nz-th [ngStyle]="_headerCellStyle({})" [nzWidth]="setDetail.fixedHeader?.enable &&setDetail.fixedHeader?.width && setDetail.fixedHeader?.width[i]?setDetail.fixedHeader?.width[i]:!setDetail.fixedHeader?'':'floor(100/(tableData.columns.length+additionalColNum)) + '%''"
+          *ngIf="setDetail.showIndex">
+          <span>NO</span>
+        </th>
+        <th nz-th *ngFor="let item of tableData.columns;let i = index" (nzSortChange)="sort(item.property,$event,item.more.sortBy)"
+          [nzShowSort]="!!(item.more && item.more.sortBy)" [ngStyle]="_headerCellStyle(item)" [nzWidth]="setDetail.fixedHeader?.enable &&setDetail.fixedHeader?.width && setDetail.fixedHeader?.width[i]?setDetail.fixedHeader?.width[i]:!setDetail.fixedHeader?'':floor(100/(tableData.columns.length+additionalColNum)) + '%'">
+          <span *ngIf="!headerCellRef">{{item.value | sgChineseConv}}</span>
+          <ng-template [ngTemplateOutlet]="headerCellRef" [ngTemplateOutletContext]="{$implicit: item}" *ngIf="headerCellRef"></ng-template>
+          <!-- <nz-table-sort (nzValueChange)="sort(item.property, $event, item.more.sortBy)" *ngIf="item.more && item.more.sortBy"></nz-table-sort> -->
+        </th>
+        <th nz-th [ngStyle]="_headerCellStyle({})" [nzWidth]="setDetail.fixedHeader?.enable &&setDetail.fixedHeader?.width && setDetail.fixedHeader?.width[i]?setDetail.fixedHeader?.width[i]:!setDetail.fixedHeader?'':floor(100/(tableData.columns.length+additionalColNum)) + '%'"
+          *ngIf="setDetail.showAction" nzRight="0px">
+          <span *ngIf="_dataDrive.nameSets?.actionCol;else elseBlock ">{{_dataDrive.nameSets?.actionCol}}</span>
+          <ng-template #elseBlock>
+            <span>Action</span>
+          </ng-template>
+        </th>
+      </tr>
+    </thead>
+    <tbody nz-tbody (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
+      <tr nz-tbody-tr *ngFor="let data of nzTable.data;let i = index; trackBy: trackByIndex">
+        <td nzShowCheckbox [(nzChecked)]="data[0].checked" [nzDisabled]="data[0].disableCheck" (nzCheckedChange)="refreshChecked($event, data[0])" *ngIf="setDetail.showCheckbox" nzLeft="0px"></td>
+        <td nz-td *ngIf="setDetail.showIndex">
+          <span>{{calIdx(i) + 1}}</span>
+        </td>
+        <ng-container *ngFor="let item of data">
+          <td [ngStyle]="runRegExp(i, setDetail.body, item.property)" nz-td *ngIf="!item.hide">
+            <ng-container [ngSwitch]="types[item.property]">
+              <div *ngSwitchCase="'img'">
+                <button nz-button [nzType]="'primary'" *ngIf="item.value" (click)="scanImgs(item.value)">
+                  <span [ngStyle]="runRegExp(i, setDetail.body, item.property)">{{'dataDriveModule.scanPicture' |
+                    translate}}</span>
+                </button>
+              </div>
+              <ng-container *ngSwitchCase="'self'">
+                <ng-template [ngTemplateOutlet]="tableCellRef" [ngTemplateOutletContext]="{data: arrayToObjectForData(i), property: item.property}"
+                  *ngIf="tableCellRef"></ng-template>
+                <span *ngIf="!tableCellRef">{{item.value | myFlex: (pipes &&
+                  pipes[item.property]?pipes[item.property]:'') | async }}</span>
+              </ng-container>
+              <span *ngSwitchDefault>{{item.value | myFlex: (pipes && pipes[item.property]?pipes[item.property]:'') |
+                async }}</span>
+            </ng-container>
+          </td>
+        </ng-container>
+        <td [ngStyle]="runRegExp(i, setDetail.body,'')" nz-td *ngIf="setDetail.showAction" nzRight="0px">
+          <span>
+            <a *ngIf="canEdit" (click)="toUpdate(i)">
+              <span *ngIf="_dataDrive.nameSets?.update;else elseBlock1 ">{{_dataDrive.nameSets?.update}}</span>
+              <ng-template #elseBlock1>
+                <span>{{'alter' | translate}}</span>
+              </ng-template>
+            </a>
+            <nz-divider nzType="vertical" *ngIf="canEdit && canDelete"></nz-divider>
+            <a *ngIf="canDelete" (click)="toDelete(i)">
+              <span *ngIf="_dataDrive.nameSets?.delete;else elseBlock2 ">{{_dataDrive.nameSets?.delete}}</span>
+              <ng-template #elseBlock2>
+                <span>{{'delete' | translate}}</span>
+              </ng-template>
+            </a>
+            <ng-container *ngIf="setDetail.paramsOut">
+              <nz-divider nzType="vertical" *ngIf="canEdit || canDelete"></nz-divider>
+              <a (click)="paramsOut(setDetail.paramsOut.params,i)">{{setDetail.paramsOut.name}}</a>
+            </ng-container>
+            <ng-container *ngIf="setDetail.linkToPhone">
+              <nz-divider nzType="vertical" *ngIf="canEdit || canDelete || setDetail.paramsOut"></nz-divider>
+              <a (click)="linkToPhone(setDetail.linkToPhone,i)">{{setDetail.linkToPhone.name}}</a>
+            </ng-container>
+          </span>
+          <ng-template [ngTemplateOutlet]="actionRef" [ngTemplateOutletContext]="{data: arrayToObjectForData(i),index: calIdx(i)}"
+            *ngIf="actionRef"></ng-template>
+        </td>
+      </tr>
+    </tbody>
+    <span nz-table-footer>{{setDetail.footer.content}}</span>
+  </nz-table>
+</div>
+
+<app-photo-viewer [imgList]="fileList" [myShowInformer]="showInformer"></app-photo-viewer>
+<ng-template #totalRef let-total>
+  共 {{total}} 条
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="loadmore" style="text-align: center">
+    <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()" style="width: 100%">loading more</button>
+    <nz-spin *ngIf="loadingMore" [nzSpinning]="loadingMore"></nz-spin>
+  </div>
+</ng-template>

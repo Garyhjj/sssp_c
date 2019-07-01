@@ -1,0 +1,4 @@
+<nz-select [(ngModel)]="_value" (ngModelChange)="change()" nzMode="multiple" [nzPlaceHolder]="myPlaceHolder" [style.minWidth]="'100px'"
+  nzSize="default">
+  <nz-option [nzLabel]="item.value" [nzValue]="item.property" *ngFor="let item of _options"></nz-option>
+</nz-select>

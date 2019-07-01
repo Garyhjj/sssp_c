@@ -1,0 +1,10 @@
+<nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload" nzMultiple [nzAccept]="miAccept">
+  <button nz-button>
+    <i class="anticon anticon-upload"></i>
+    <span>选择文件</span>
+  </button>
+</nz-upload>
+<button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()" [disabled]="fileList.length == 0"
+  style="margin-top: 16px" *ngIf="!hideUploadButton">
+  {{ uploading ? '上传中' : '开始上传' }}
+</button>

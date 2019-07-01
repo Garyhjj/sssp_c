@@ -1,0 +1,13 @@
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.checkbox-container label {
+    flex: 25%;
+}
+
+.ant-checkbox-wrapper+.ant-checkbox-wrapper {
+    margin-left: 0;
+    margin-bottom: 8px;
+}

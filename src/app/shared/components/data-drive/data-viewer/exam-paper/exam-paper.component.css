@@ -1,0 +1,35 @@
+.exam-title {
+  text-align: center;
+  font-size: 3.0rem;
+  font-weight: bold;
+}
+
+nz-card {
+  margin-top: 15px;
+}
+
+:host ::ng-deep .ant-card-head {
+  background-color: #ecf6fd;
+}
+
+.question-item {
+  margin: 20px;
+}
+
+.exam-header {
+  margin: 15px 0;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  padding: 8px 15px;
+}
+
+.exam-header nz-row {
+  font-size: 1.6rem;
+  line-height: 2.5rem;
+}
+
+.left-time {
+  color: red;
+  font-weight: 500;
+  font-size: 2.0rem;
+}

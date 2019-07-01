@@ -1,0 +1,210 @@
+<div class="container">
+  <nz-content style="background:#fff; padding: 3px;height:100%">
+    <!-- 搜索框栏 -->
+    <div class="fliter-container">
+      <button nz-button nzType="primary" nzShape="circle" (click)="updateView()" *ngIf="dataDrive.tableData.searchable && !dataDrive.searchSets"><i
+          class=" anticon anticon-search"></i></button>
+      <div class="left-container" *ngIf="!notShowSearchInput && dataDrive.tableData">
+        <nz-input-group style="width:350px" [nzAddOnBefore]="addOnBeforeTemplate" [nzAddOnAfter]="addOnAfterTemplate"
+          *ngIf="dataDrive.tableData.searchable && optionList && optionList.length >0">
+          <input type="text" nz-input [(ngModel)]="filterValue" [placeholder]="(selectedOption?.placeHolder?selectedOption.placeHolder: '') | sgChineseConv"
+            [disabled]="!validateForm.valid">
+        </nz-input-group>
+        <ng-template #addOnBeforeTemplate>
+          <nz-select style="width: 100px;" [(ngModel)]="selectedOption">
+            <nz-option *ngFor="let option of optionList" [nzLabel]="option.label | sgChineseConv" [nzValue]="option">
+            </nz-option>
+          </nz-select>
+        </ng-template>
+        <ng-template #addOnAfterTemplate>
+          <!-- <button [disabled]="!validateForm.valid" (click)="clickSimpleSearch('simple')">
+                            <i class="anticon anticon-search"></i>
+                        </button> -->
+          <i nz-icon type="search" theme="outline" (click)="clickSimpleSearch('simple')"></i>
+        </ng-template>
+        <div class="new-button" *ngIf="dataDrive.additionalFn?.addItem && dataDrive.tableData.addable">
+          <button nz-button [nzType]="'primary'" (click)="addItem()">
+            <span *ngIf="dataDrive.nameSets?.add;else elseBlock ">{{dataDrive.nameSets?.add}}</span>
+            <ng-template #elseBlock>
+              <span>{{'newData' | translate}}</span>
+            </ng-template>
+          </button>
+        </div>
+      </div>
+      <div class="right-controler">
+        <ng-container *ngIf="optionList && optionList.length >0 && !notShowSearchInput">
+          <a class="high-level-search" (click)="toggle()" *ngIf="!show && dataDrive.tableData  && dataDrive.tableData.searchable && dataDrive?.searchSets && dataDrive?.searchSets.length > 0">{{'queryDetailPra'
+            | translate}}</a>
+          <a class="high-level-search" (click)="toggle()" *ngIf="show">{{'queryPra' | translate}}</a>
+        </ng-container>
+
+        <ng-container *ngIf="dataDrive.additionalFn?.menu">
+          <nz-tooltip [nzTitle]="'mutiUpdate' | translate" [nzPlacement]="'top'">
+            <a nz-tooltip>
+              <button nz-button [nzType]="'default'" (click)="showMutiUpdate()" *ngIf="dataDrive.tableData?.addable && dataDrive.additionalFn?.mutiUpdate">
+                <i nz-icon type="file" theme="outline"></i>
+              </button>
+            </a>
+          </nz-tooltip>
+
+          <ng-container *ngIf="dataDrive.additionalFn?.scrollSet && dataDrive.dataViewSet?.type === 'table'">
+            <nz-tooltip [nzTitle]="'dataDriveModule.stopScrolling' | translate" [nzPlacement]="'top'" *ngIf="dataDrive.dataViewSet.scrollSet">
+              <a nz-tooltip>
+                <button nz-button [nzType]="'default'" (click)="stopScrolling()">
+                  <i nz-icon type="pause-circle" theme="outline"></i>
+                </button>
+              </a>
+            </nz-tooltip>
+
+            <nz-tooltip [nzTitle]="'dataDriveModule.beginScrolling' | translate" [nzPlacement]="'top'" *ngIf="!dataDrive.dataViewSet.scrollSet">
+              <a nz-tooltip>
+                <button nz-button [nzType]="'default'" (click)="beginScrolling()">
+                  <i nz-icon type="play-circle" theme="outline"></i>
+                </button>
+              </a>
+            </nz-tooltip>
+          </ng-container>
+
+
+          <nz-tooltip [nzTitle]="'downloadExcelFile' | translate" [nzPlacement]="'top'">
+            <a nz-tooltip>
+              <button nz-button [nzType]="'default'" (click)="toExcel()" *ngIf="dataDrive.additionalFn?.toExcel">
+                <i nz-icon type="download" theme="outline"></i>
+              </button>
+            </a>
+          </nz-tooltip>
+
+          <nz-tooltip [nzTitle]="'pickColumn' | translate" [nzPlacement]="'top'">
+            <a nz-tooltip>
+              <button nz-button [nzType]="'default'" (click)="showModalTop()" *ngIf="dataDrive.additionalFn?.filterColumn">
+                <i nz-icon type="setting" theme="outline"></i>
+              </button>
+            </a>
+          </nz-tooltip>
+
+          <nz-tooltip [nzTitle]="'fullScreen' | translate" [nzPlacement]="'top'">
+            <a nz-tooltip>
+              <button nz-button [nzType]="'default'" (click)="showModal()" *ngIf="dataDrive.additionalFn?.fullScreen">
+                <i nz-icon type="arrows-alt" theme="outline"></i>
+              </button>
+            </a>
+          </nz-tooltip>
+
+          <nz-tooltip [nzTitle]="'viewType' | translate" [nzPlacement]="'top'">
+            <a nz-tooltip>
+              <button nz-button [nzType]="'default'" (click)="switchViewType(dataDrive.additionalFn.switchViewType)"
+                *ngIf="dataDrive.additionalFn?.switchViewType">
+                <i nz-icon type="laptop" theme="outline"></i>
+              </button>
+            </a>
+          </nz-tooltip>
+
+          <nz-tooltip [nzTitle]="'changeTableFontSize' | translate" [nzPlacement]="'top'">
+            <a nz-tooltip>
+              <button nz-button [nzType]="'default'" (click)="openFontSizeModal()" *ngIf="dataDrive.additionalFn?.changeHeaderFontSize">
+                <i nz-icon type="info" theme="outline"></i>
+              </button>
+            </a>
+          </nz-tooltip>
+        </ng-container>
+      </div>
+    </div>
+    <!-- End 搜索框栏 -->
+    <!-- 检索项 -->
+    <div class="filter" *ngIf="tagList && tagList.length >0">
+      <i class="anticon anticon-filter" style="margin-right:10px"></i>
+      <span style="margin-right:10px">{{'queryItem' | translate}}:</span>
+      <span>
+        <nz-tag nzClosable (nzClose)="onCloseTag(tag,'simple')" *ngFor="let tag of tagList">{{tag.label |
+          sgChineseConv}}</nz-tag>
+      </span>
+      <span style="margin-right:10px;cursor:pointer;" *ngIf="tagList && tagList.length >0" (click)="clearAllFilter('simple')">{{'clear'
+        | translate}}</span>
+    </div>
+    <!-- End 检索项 -->
+
+    <!-- 高级搜索框 -->
+    <ng-container *ngIf="!dataDrive.useSearchCollapse">
+      <div class="high-level-search-contianer" [style.display]="show ?'block':'none'" *ngIf="dataDrive.tableData.searchable && inputTypeList && inputTypeList.length >0">
+        <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8" *ngFor="let item of columnNameStrings;let i =index">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="7" [attr.for]="inputTypeList[i].label" [nzRequired]="inputTypeList[i].isRequired">{{inputTypeList[i].label}}
+                </nz-form-label>
+                <nz-form-control [nzSpan]="17">
+                  <app-dynamic-input [formControlName]="item" [inputOptions]="inputTypeList[i]"></app-dynamic-input>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row>
+            <div nz-col [nzSpan]="24" style="text-align: right;">
+              <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid" (click)="submitForm('high-level')"
+                style="margin-right: 8px">{{'query'
+                | translate}}</button>
+              <button nz-button (click)="reSet()">{{'reset' | translate}}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </ng-container>
+    <nz-collapse nzAccordion *ngIf="dataDrive.useSearchCollapse">
+      <nz-collapse-panel [nzHeader]="'query' | translate" [nzActive]="true">
+        <form nz-form [formGroup]="validateForm">
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8" *ngFor="let item of columnNameStrings;let i =index">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="7" [attr.for]="inputTypeList[i].label" [nzRequired]="inputTypeList[i].isRequired">{{inputTypeList[i].label}}
+                </nz-form-label>
+                <nz-form-control [nzSpan]="17">
+                  <app-dynamic-input [formControlName]="item" [inputOptions]="inputTypeList[i]"></app-dynamic-input>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row>
+            <div nz-col [nzSpan]="24" style="text-align: right;">
+              <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid" (click)="submitForm('high-level')"
+                style="margin-right: 8px">{{'query'
+                | translate}}</button>
+              <button nz-button (click)="reSet()">{{'reset' | translate}}</button>
+            </div>
+          </div>
+        </form>
+      </nz-collapse-panel>
+    </nz-collapse>
+    
+    <!-- End 高级搜索框 -->
+    <!-- Modal -->
+    <app-filter-column-flex [isVisible]="isVisible" [opts]="dataDrive" (closed)="closeModal()"></app-filter-column-flex>
+    <!-- End Modal -->
+
+    <!-- 调整表格字体大小 -->
+    <nz-modal [nzVisible]="showFontSizeModal" [nzContent]="modalContent1" [nzFooter]="footer" [nzTitle]="'changeTableFontSize' | translate"
+      (nzOnCancel)="closeFontSizeModal()">
+      <ng-template #modalContent1>
+        <nz-row [nzType]="'flex'" [nzJustify]="'start'" style="margin-bottom: 20px;" *ngIf="dataDrive.additionalFn?.changeHeaderFontSize">
+          <div nz-col class="flex-center">
+            <div>{{'headerFontSize' | translate}}</div>
+          </div>
+          <nz-slider *ngIf="showFontSizeModal" nz-col [nzMin]="10" [nzMax]="60" [nzSpan]="12" [(ngModel)]="headerFontSize" (nzOnAfterChange)="changeHeaderSize()"></nz-slider>
+        </nz-row>
+        <nz-row [nzType]="'flex'" [nzJustify]="'start'" *ngIf="dataDrive.additionalFn?.changeBodyFontSize">
+          <div nz-col class="flex-center">
+            <div>{{'dataFontSize' | translate}}</div>
+          </div>
+          <nz-slider *ngIf="showFontSizeModal" nz-col [nzMin]="10" [nzMax]="60" [nzSpan]="12" [(ngModel)]="bodyFontSize" (nzOnAfterChange)="changeBodySize()"></nz-slider>
+        </nz-row>
+      </ng-template>
+      <ng-template #footer>
+        <div>
+          <button nz-button [nzType]="'primary'" (click)="closeFontSizeModal()">
+            {{'confirm' | translate}}
+          </button>
+        </div>
+      </ng-template>
+    </nz-modal>
+    <!-- End 调整表格字体大小 -->
+  </nz-content>
+</div>

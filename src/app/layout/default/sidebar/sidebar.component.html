@@ -1,0 +1,18 @@
+<div class="alain-default__aside-inner">
+  <nz-dropdown nzTrigger="click" class="alain-default__aside-user">
+    <div nz-dropdown class="user-block-dropdown">
+      <nz-avatar class="alain-default__aside-user-avatar" [nzSrc]=" user.AVATAR_URL
+      ? oaUrl + user.AVATAR_URL
+      : './assets/tmp/img/avatar.jpg'"></nz-avatar>
+      <div class="alain-default__aside-user-info">
+        <strong>{{user.USER_NAME}}</strong>
+        <p class="text-truncate mb0">{{user.EMAIL}}</p>
+      </div>
+    </div>
+    <!-- <ul nz-menu>
+      <li nz-menu-item routerLink="/pro/account/center">{{ 'menu.account.center' | translate }}</li>
+      <li nz-menu-item routerLink="/pro/account/settings">{{ 'menu.account.settings' | translate }}</li>
+    </ul> -->
+  </nz-dropdown>
+  <sidebar-nav class="d-block py-lg"></sidebar-nav>
+</div>

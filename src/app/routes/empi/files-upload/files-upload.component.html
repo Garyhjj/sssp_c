@@ -1,0 +1,31 @@
+<!-- <app-data-drive [name]="'XXX'" (dataDriveInit)="getDataDrive($event)"></app-data-drive> -->
+<page-header>
+
+</page-header>
+<div style="padding: 20px 20px; background-color: #fff">
+  <nz-card [nzBordered]="false">
+    <nz-steps [(nzCurrent)]="step">
+      <nz-step [nzTitle]="'empi.fileForm' | translate"></nz-step>
+      <nz-step [nzTitle]="'empi.uploadZone' |  translate"></nz-step>
+      <nz-step [nzTitle]="'empi.updateRelation' | translate"></nz-step>
+    </nz-steps>
+    <div *ngIf="step==0">
+      <app-step-form1 [onSubmit]="submit1"></app-step-form1>
+    </div>
+
+    <div *ngIf="step==1">
+      <button nz-button [nzType]="'primary'" (click)="toFirst()">
+        <span>{{'empi.backToFirst' | translate}}</span>
+      </button>
+      <app-step-form2 [onSubmit]="submit2"></app-step-form2>
+    </div>
+
+    <div *ngIf="step==2">
+      <!-- <button nz-button [nzType]="'primary'" (click)="toFirst()">
+        <span>{{'finish' | translate}}</span>
+      </button> -->
+      <app-step-form3 [lists]="hasUploadList" [mails]="mails" [afterDone]="backToList"></app-step-form3>
+    </div>
+  </nz-card>
+
+</div>

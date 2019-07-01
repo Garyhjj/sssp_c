@@ -1,0 +1,10 @@
+<div style="margin-bottom: 16px;">
+  <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" [nzAddOnAfter]="addOnAfterTemplate">
+    <!-- <input type="text" nz-input [(ngModel)]="mainValue" (ngModelChange)="change()"> -->
+    <app-dynamic-input [inputOptions]="mainInputSet? mainInputSet:{type: 'text',more:{editable: true}}" [(ngModel)]="mainValue"
+      (ngModelChange)="change()"></app-dynamic-input>
+  </nz-input-group>
+  <ng-template #addOnAfterTemplate>
+    <app-dynamic-input [inputOptions]="afterInputSet" [(ngModel)]="afterValue" (ngModelChange)="change()"></app-dynamic-input>
+  </ng-template>
+</div>

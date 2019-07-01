@@ -1,0 +1,82 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+}
+
+
+/* nz-content{
+    min-height: 200%;
+} */
+
+.ant-layout-footer {
+    padding: 12px 50px;
+}
+
+.components-table-demo-control-bar {
+    margin-bottom: 10px;
+}
+
+.components-table-demo-control-bar ::ng-deep .ant-form-item {
+    margin-right: 16px;
+    margin-bottom: 8px;
+}
+
+body {
+    background-color: white;
+}
+
+.right-controler {
+    flex: 1 0 auto;
+    text-align: right;
+}
+
+.fliter-container {
+    display: flex;
+    /* padding-left: 16px; */
+    margin-bottom: 8px;
+}
+
+.left-container {
+    display: flex;
+}
+
+.filter {
+    /* padding-left: 16px; */
+    margin-bottom: 8px;
+}
+
+.new-button {
+    margin-left: 20px;
+}
+
+.high-level-search {
+    margin-right: 10px;
+}
+
+
+/* 高级搜索框 */
+
+.ant-advanced-search-form {
+    padding: 24px;
+    background: #fbfbfb;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+}
+
+.high-level-search-contianer {
+    /* padding-left: 16px; */
+    margin-bottom: 8px;
+}
+
+
+/* End 高级搜索框 */
+
+.flex-center {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 30px;
+    line-height: 30px;
+}

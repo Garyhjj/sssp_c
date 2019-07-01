@@ -1,0 +1,25 @@
+<form nz-form [formGroup]="myForm" *ngIf="myForm">
+    <div nz-row>
+      <div nz-col [nzSpan]="24" *ngFor="let item of forms">
+        <ng-template [ngTemplateOutlet]="inputItem" [ngTemplateOutletContext]="{$implicit: item, formGroup: myForm}"></ng-template>
+      </div>
+    </div>
+    <nz-form-item style="display:block;text-align:center">
+      <button nz-button type="botton" [nzType]="'primary'" style="width: 20%;margin-right: 16px" [disabled]="!myForm.valid"
+        (click)="submit()">{{'confirm'
+        | translate}}</button>
+    </nz-form-item>
+  </form>
+  
+  
+  <ng-template #inputItem let-item let-formGroup="formGroup">
+    <nz-form-item [formGroup]="formGroup">
+      <nz-form-label [nzRequired]="item.isRequired" [nzFor]="item.label" [nzSpan]="8">{{item.label | translate}}</nz-form-label>
+      <nz-form-control nzSpan="7">
+        <app-dynamic-input [formControlName]="item.property" [inputOptions]="item.inputOptions" [isReadonly]="item.isReadonly"></app-dynamic-input>
+      </nz-form-control>
+    </nz-form-item>
+  </ng-template>
+  
+
+  

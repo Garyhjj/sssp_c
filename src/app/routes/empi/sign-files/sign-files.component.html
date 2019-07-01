@@ -1,0 +1,50 @@
+<!-- <app-data-drive [name]="'XXX'" (dataDriveInit)="getDataDrive($event)"></app-data-drive>-->
+<page-header>
+
+</page-header>
+<div style="padding: 20px 20px; background-color: #fff; min-height: 80vh">
+
+  <app-data-drive [name]="321" (dataDriveInit)="getDataDrive($event)" [bodyCellStyle]="bodyCellStyle">
+    <ng-template #actionRef let-data="data">
+      <span>
+          <a (click)="scanPdf(data)">{{'scan' | translate}}</a>
+          <nz-divider nzType="vertical"></nz-divider>
+        <a (click)="sign(data)">{{'empi.sign' | translate}}</a>
+        <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="reject(data)">{{'empi.reject' | translate}}</a>
+      </span>
+    </ng-template>
+  </app-data-drive>
+</div>
+
+
+
+<nz-modal [nzVisible]="isSignVisible" [nzTitle]="'empi.sign' | translate" [nzContent]="modalContent1" [nzFooter]="modalFooter1" *ngIf="isSignVisible"
+  (nzOnCancel)="isSignVisible = false" nzWidth="560px">
+  <ng-template #modalContent1>
+    
+    <form nz-form nzLayout="horizontal">
+        <div nz-row>
+            <div nz-col [nzSpan]="24" >
+                <nz-form-item>
+                    <nz-form-label [nzRequired]="true" nzFor="QE" nzSpan="8">QE</nz-form-label>
+                    <nz-form-control nzSpan="14"><app-colleague-searcher nz-input [(ngModel)]="QE" name="QE" miPickerFormat="{ID}"></app-colleague-searcher>
+                    </nz-form-control>
+                      
+                  </nz-form-item>
+            </div>
+          </div>
+      <nz-form-item style="display:block;text-align:center">
+        <button nz-button type="button" [nzType]="'primary'" style="width: 45%" (click)="submitSignForm()" [disabled]="!QE">{{'confirm' | translate}}</button>
+      </nz-form-item>
+    </form>
+  </ng-template>
+  <ng-template #modalFooter1>
+
+  </ng-template>
+</nz-modal>
+
+
+<div class="my-modal" *ngIf="targetPdf">
+    <app-scan [pdfUrl]="targetPdf" [onKeyDown]="attachFn"></app-scan>
+</div>

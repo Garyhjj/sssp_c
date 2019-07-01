@@ -1,0 +1,13 @@
+<nz-select style="width: 200px;" nzAllowClear [nzPlaceHolder]="miPlaceHolder" [nzDisabled]="miDisabled" [(ngModel)]="selectedOption"
+  nzShowSearch [nzServerSearch]="true" (ngModelChange)="change($event)" (nzOnSearch)="searchChange($event)" [nzNotFoundContent]="'无法找到'">
+  <ng-container *ngIf="!isLoading">
+    <nz-option *ngFor="let option of searchOptions" [nzLabel]="option.value" [nzValue]="option.property">
+    </nz-option>
+  </ng-container>
+
+  <ng-container *ngIf="isLoading">
+    <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+      <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+    </nz-option>
+  </ng-container>
+</nz-select>

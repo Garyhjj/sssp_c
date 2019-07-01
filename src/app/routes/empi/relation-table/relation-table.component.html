@@ -1,0 +1,11 @@
+
+<button nz-button type="botton" [nzType]="'primary'" (click)="updateRelation()" *ngIf="attchFile">{{'empi.addRelation' | translate}}</button>
+
+<app-data-drive [name]="322" (dataDriveInit)="getDataDrive($event)">
+  <ng-template #actionRef let-data="data">
+     <span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a (click)="changeRelation(data)">{{'alter' | translate}}</a>
+    </span>
+  </ng-template>
+</app-data-drive>

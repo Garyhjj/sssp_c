@@ -1,0 +1,16 @@
+<div class="clearfix">
+    <nz-upload
+      [nzAction]="uploadUrl"
+      nzListType="picture-card"
+      [(nzFileList)]="fileList"
+      [nzShowButton]="(fileList.length < _maxCount) && _addable"
+      [nzPreview]="handlePreview"
+      [nzBeforeUpload]="beforeUpload"
+      [nzRemove]="remove"
+      [nzShowUploadList]="{ showPreviewIcon: _scanable, showRemoveIcon: _removable }"
+      >
+        <i class="anticon anticon-plus"></i>
+        <div class="ant-upload-text">Upload</div>
+    </nz-upload>
+  </div>
+  <app-photo-viewer [imgList]="fileList" [previewImageIdx]="previewImageIdx" [myShowInformer]="showInformer"></app-photo-viewer>

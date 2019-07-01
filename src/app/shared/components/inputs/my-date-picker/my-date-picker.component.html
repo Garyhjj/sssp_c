@@ -1,0 +1,7 @@
+<nz-date-picker (ngModelChange)="change($event)" [ngModel]="_date" [nzFormat]="myFormat" [nzShowTime]="myShowTime" [nzPlaceHolder]="myPlaceHolder"
+  [nzMode]="myMode" *ngIf="myMode === 'day'"></nz-date-picker>
+<nz-month-picker (ngModelChange)="change($event)" [ngModel]="_date" [nzFormat]="myFormat" [nzPlaceHolder]="myPlaceHolder"
+  *ngIf="myMode === 'month'"></nz-month-picker>
+
+<nz-range-picker [nzShowTime]="myShowTime" [nzFormat]="myFormat" [nzPlaceHolder]="[ 'Start Time', 'End Time' ]" (ngModelChange)="change($event)"
+  [ngModel]="_date" *ngIf="myMode === 'range'"></nz-range-picker>

@@ -1,0 +1,60 @@
+<ng-container *ngIf="inputOptions">
+    <div [appShieldLayer]="_isReadonly" [layerStyle]="readonlyStyle">
+  
+  <input nz-input [(ngModel)]="_value" (ngModelChange)="change()" [placeholder]="inputOptions.placeHolder?inputOptions.placeHolder:' '"
+    *ngIf="inputOptions?.type === 'text'" [readonly]="!inputOptions?.more?.editable">
+
+  <textarea nz-input [(ngModel)]="_value" (ngModelChange)="change()" [placeholder]="inputOptions.placeHolder?inputOptions.placeHolder:' '"
+    *ngIf="inputOptions?.type === 'textarea'" [nzAutosize]="1" [readonly]="!inputOptions?.more?.editable"></textarea>
+
+
+  <!-- <nz-select [(ngModel)]="_value" (ngModelChange)="change()" [nzSize]="'large'" [nzPlaceHolder]="inputOptions.placeHolder" *ngIf="inputOptions?.type === 'select'"
+                [style.minWidth]="'100px'">
+                <nz-option [nzLabel]="item.value" [nzValue]="item.property" *ngFor="let item of inputOptions?.more?.options"></nz-option>
+              </nz-select> -->
+  <app-mx-select [(ngModel)]="_value" (ngModelChange)="change()" *ngIf="inputOptions?.type === 'select'" [myPlaceHolder]="inputOptions.placeHolder"
+    [options]="inputOptions?.more?.options" [lazyAPI]="inputOptions?.more?.lazyAPI" [lazyParams]="inputOptions?.more?.lazyParams"
+    [lazyAPIUserMes]="inputOptions?.more?.lazyAPIUserMes"></app-mx-select>
+
+  <app-mx-checkbox [(ngModel)]="_value" (ngModelChange)="change()" *ngIf="inputOptions?.type === 'checkbox'" [myPlaceHolder]="inputOptions.placeHolder"
+    [options]="inputOptions?.more?.options" [lazyAPI]="inputOptions?.more?.lazyAPI" [lazyParams]="inputOptions?.more?.lazyParams"
+    [lazyAPIUserMes]="inputOptions?.more?.lazyAPIUserMes" [pickerFormat]="inputOptions.more?.pickerFormat"></app-mx-checkbox>
+
+  <!-- <nz-datepicker [(ngModel)]="_value" (ngModelChange)="change()" [nzSize]="'large'" *ngIf="inputOptions?.type === 'datepicker'" nzShowTime="'hh:mm'" [nzFormat]="'YYYY-MM-DD hh:mm'">
+              </nz-datepicker> -->
+  <app-my-date-picker [(ngModel)]="_value" (ngModelChange)="change()" *ngIf="inputOptions?.type === 'datePicker'" [myPickerFormat]="inputOptions.more?.pickerFormat"
+    [myFormat]="inputOptions.more?.showFormat" [myShowTime]="inputOptions.more?.showTime" [myPlaceHolder]="inputOptions.placeHolder"
+    [myMode]="inputOptions.more?.showMode"></app-my-date-picker>
+
+
+  <app-my-time-picker [(ngModel)]="_value" (ngModelChange)="change()" *ngIf="inputOptions?.type === 'timePicker'" [myPickerFormat]="inputOptions.more?.pickerFormat"
+    [myFormat]="inputOptions.more?.showFormat" [myPlaceHolder]="inputOptions.placeHolder">
+  </app-my-time-picker>
+
+  <ng-container *ngIf="inputOptions?.type === 'number'">
+    <nz-input-number [(ngModel)]="_value" (ngModelChange)="change()" [nzStep]="inputOptions.more?.step" [nzMax]="inputOptions.more?.max"
+      [nzMin]="inputOptions.more?.min" [style.width]="inputOptions?.more?.width || '50%'"></nz-input-number>
+    <span *ngIf="inputOptions?.more?.unitText"> &nbsp;{{inputOptions?.more?.unitText}}</span>
+  </ng-container>
+
+
+  <app-my-cascader [(ngModel)]="_value" (ngModelChange)="change()" *ngIf="inputOptions?.type === 'cascader'" [myPlaceHolder]="inputOptions?.more?.placeHolder"
+    [myOptions]="inputOptions?.more?.options" [myCascaderLazySets]="inputOptions?.more?.cascaderLazySets" [myProperties]="inputOptions?.more?.properties"></app-my-cascader>
+
+  <app-my-switch [(ngModel)]="_value" (ngModelChange)="change()" *ngIf="inputOptions?.type === 'switch'" [myTrueFormat]="inputOptions?.trueFormat"
+    [myFalseFormat]="inputOptions?.falseFormat"></app-my-switch>
+
+  <app-colleague-searcher [(ngModel)]="_value" (ngModelChange)="change()" [miDisabled]="!inputOptions?.more?.editable" [miSearchFilter]="inputOptions?.more?.searchFilter"
+    [miPickerFormat]="inputOptions?.more?.pickerFormat" *ngIf="inputOptions?.type === 'colleagueSearcher'"></app-colleague-searcher>
+
+  <app-photo-upload [(ngModel)]="_value" (ngModelChange)="change()" *ngIf="inputOptions?.type === 'photoUpload'" [pickerFormat]="inputOptions?.more?.pickerFormat"
+    [maxCount]="inputOptions?.more?.maxCount" [removable]="inputOptions?.more?.removable" [addable]="inputOptions?.more?.addable"
+    [scanable]="inputOptions?.more?.scanable"></app-photo-upload>
+
+  <app-mx-auto-complete [(ngModel)]="_value" (ngModelChange)="change()" *ngIf="inputOptions?.type === 'autoComplete'" [myPlaceHolder]="inputOptions.placeHolder"
+    [options]="inputOptions?.more?.options" [lazyAPI]="inputOptions?.more?.lazyAPI" [lazyParams]="inputOptions?.more?.lazyParams"
+    [lazyAPIUserMes]="inputOptions?.more?.lazyAPIUserMes" [isSelection]="inputOptions?.more?.isSelection"></app-mx-auto-complete>
+  <app-input-group [(ngModel)]="_value" (ngModelChange)="change()" *ngIf="inputOptions?.type === 'inputGroup'" [afterInputSet]="inputOptions?.more?.afterInputSet"
+    [mainInputSet]="inputOptions?.more?.mainInputSet"></app-input-group>
+  </div>
+</ng-container>
