@@ -51,6 +51,24 @@ export class AuthService {
   }
 
   login(data: any) {
+    return of({ User: { USER_NAME: data.userName, privilege: [{ ROLE_NAME: 'EMPI_ADMIN' }] }, Token: 'dfd',Expires: 1000*60*60*24}).pipe(
+      map((d: any) => {
+        const user: UserState = { token: '' };
+        Object.assign(user, d.User);
+        user.modules = d.Modules;
+        user.password = data.password;
+        user.rememberPWD = data.remember;
+        const expires = d.Expires;
+        this.tokenEffectTime = expires - new Date().getTime();
+        this.updateTokenMes(expires, d.Token);
+        this.auth = true;
+        this.updateAuth(true);
+        // this.store$.dispatch(new UserLogin(user));
+        this.autoUpdateToken();
+        user.token = d.Token;
+        return user;
+      }),
+    );
     return this.http
       .post(
         loginAPI.login + '?_allow_anonymous=true',
@@ -143,6 +161,15 @@ export class AuthService {
   }
 
   getSelfPrivilege() {
+    return of([{ ROLE_NAME: 'EMPI_ADMIN' }]).pipe(
+      map((p: Privilege[]) => {
+        // this.store$.dispatch(new UserUpdatePrivilege(p));
+        this.setEmpiRole(p);
+        this.menuService.resume();
+        const user1 = Object.assign({}, this.user, { privilege: p });
+        this.tokenService.set(user1);
+      }),
+    );;
     const send = { moduleID: '' };
     return this.http.get(replaceQuery(wholeAPI.getSelfPrivilege, send)).pipe(
       map((p: Privilege[]) => {
@@ -165,9 +192,9 @@ export class AuthService {
   }
 
   checkAuth() {
-    const tokenMes = this.getTokenMes();
-    return tokenMes && tokenMes.expires > new Date().getTime();
-    // return true;
+    // const tokenMes = this.getTokenMes();
+    // return tokenMes && tokenMes.expires > new Date().getTime();
+    return true;
   }
   updateTokenMes(expires: number, token: string) {
     const tokenMes: TokenMes = { expires, token };

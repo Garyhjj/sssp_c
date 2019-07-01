@@ -67,7 +67,7 @@ export class DataDriveService {
     let cache = this.cache.get(cacheName, id, false);
     if (!cache) {
       cache = this.http
-        .get(replaceQuery(environment.END_URL +  'SystemOperation/GetDataDrives?id={id}&description={description}', { id }))
+        .get(replaceQuery(environment.EMPI_URL +  'SystemOperation/GetDataDrives?id={id}&description={description}', { id }))
         .pipe(
           map((d: any[]) => {
             if (isArray(d) && d.length === 1) {
