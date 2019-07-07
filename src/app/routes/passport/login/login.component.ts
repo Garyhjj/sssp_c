@@ -1,3 +1,4 @@
+import { UtilService } from './../../../core/services/util.service';
 // tslint:disable-next-line:use-path-mapping
 import { AuthService } from '@core/services/auth.service';
 import { SettingsService, _HttpClient } from '@delon/theme';
@@ -41,6 +42,7 @@ export class UserLoginComponent implements OnDestroy {
     public http: _HttpClient,
     public msg: NzMessageService,
     private authSrv: AuthService,
+    private util: UtilService
   ) {
     this.form = fb.group({
       userName: [null, [Validators.required, Validators.minLength(4)]],
@@ -119,7 +121,7 @@ export class UserLoginComponent implements OnDestroy {
         // this.router.navigate(['/']);
       },
       err => {
-        console.log(err);
+        this.util.errDeal(err);
         this.loading = false;
       },
       () => (this.loading = false),

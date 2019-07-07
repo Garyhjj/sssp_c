@@ -9,7 +9,7 @@ import { AesEncrypt } from '../../shared/utils/encrypt';
 import loginAPI from './../../routes/passport/login/shared/api';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, timer, Subscription, of } from 'rxjs';
+import { BehaviorSubject, timer, Subscription, of, throwError } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { replaceQuery, isArray } from '../../shared/utils/index';
 import wholeAPI from '../../shared/api';
@@ -51,6 +51,34 @@ export class AuthService {
   }
 
   login(data: any) {
+    return this.http
+    .post(
+      loginAPI.login + '?_allow_anonymous=true',
+      data,
+    ).pipe(concatMap((user) => {
+      if(!user) {
+        return throwError({error: {message:'no user'}, status: 400});
+      }else {
+        return of({ User: { ...user, privilege: [{ ROLE_NAME: 'EMPI_ADMIN' }] }, Token: 'dfd',Expires: 1000*60*60*24})
+      }
+    })).pipe(
+      map((d: any) => {
+        const user: UserState = { token: '' };
+        Object.assign(user, d.User);
+        user.modules = d.Modules;
+        user.password = data.password;
+        user.rememberPWD = data.remember;
+        const expires = d.Expires;
+        this.tokenEffectTime = expires - new Date().getTime();
+        this.updateTokenMes(expires, d.Token);
+        this.auth = true;
+        this.updateAuth(true);
+        // this.store$.dispatch(new UserLogin(user));
+        this.autoUpdateToken();
+        user.token = d.Token;
+        return user;
+      }),
+    );
     return of({ User: { USER_NAME: data.userName, privilege: [{ ROLE_NAME: 'EMPI_ADMIN' }] }, Token: 'dfd',Expires: 1000*60*60*24}).pipe(
       map((d: any) => {
         const user: UserState = { token: '' };

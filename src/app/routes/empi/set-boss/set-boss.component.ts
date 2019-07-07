@@ -18,7 +18,9 @@ export class SetBossComponent implements OnInit {
       const v = fg.value;
       if(v.CODE === v.VALUE) {
         sub.next('两个栏位的内容不能相同')
+        return false
       }
+      return true;
     })
   }
 

@@ -7,10 +7,11 @@ export const environment = {
   production: false,
   useHash: true,
   hmr: false,
-  END_URL: `http://webapi.mic.com.cn/`,
+  END_URL: `http://localhost:8092/`,
   // END_URL: 'https://miwebapi.mic.com.cn/',
-  EMPI_URL:  `http://10.86.16.90:8092/`,
-  fileEndUrl: 'http://webapi.mic.com.cn/',
+  // EMPI_URL:  `http://10.86.16.90:8092/`,
+  EMPI_URL: `http://localhost:8092/`,
+  fileEndUrl: 'http://localhost:8092',
 };
 
 /*
