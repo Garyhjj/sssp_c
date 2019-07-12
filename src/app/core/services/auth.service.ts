@@ -55,11 +55,11 @@ export class AuthService {
     .post(
       loginAPI.login + '?_allow_anonymous=true',
       data,
-    ).pipe(concatMap((user) => {
+    ).pipe(concatMap((user: UserState) => {
       if(!user) {
         return throwError({error: {message:'no user'}, status: 400});
       }else {
-        return of({ User: { ...user, privilege: [{ ROLE_NAME: 'EMPI_ADMIN' }] }, Token: 'dfd',Expires: 1000*60*60*24})
+        return of({ User: { ...user, privilege: [{ ROLE_NAME: 'EMPI_ADMIN' }] }, Token: 'dfd' + user.ID ,Expires: 1000*60*60*24})
       }
     })).pipe(
       map((d: any) => {

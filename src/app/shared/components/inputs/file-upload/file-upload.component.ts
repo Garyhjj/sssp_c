@@ -169,9 +169,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             environment.fileEndUrl + 'SystemOperation/UploadFiles',
             formData,
           )
-          .pipe(map((fs: { FilePath: string }[]) => fs.map(f => f.FilePath)))
+          // .pipe(map((fs: { FilePath: string }[]) => fs.map(f => f.FilePath)))
           .subscribe(
-            value => {
+            (value: string[]) => {
               final();
               const hasUpload = this.fileList.filter(f => f.url);
               value.forEach(v => {

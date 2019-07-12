@@ -48,22 +48,24 @@ export class FilesUploadComponent implements OnInit {
 
   getName(raw: string) {
     const rawName = raw.split('/').pop();
-    if (rawName) {
-      const year = new Date().getFullYear();
-      const parts = rawName.split('.');
-      const lgParts = parts.length;
-      if (lgParts === 1) {
-        const str = parts[0];
-        const lg = str.length;
-        return str.slice(0, lg - 17);
-      } else {
-        const lastTwo = parts[lgParts - 2];
-        const lg = lastTwo.length;
-        parts[lgParts - 2] = lastTwo.slice(0, lg - 17);
-        return parts.join('.');
-      }
-    }
-    return '';
+    return rawName? rawName.split('-')[1]: '';
+    // const rawName = raw.split('/').pop();
+    // if (rawName) {
+    //   const year = new Date().getFullYear();
+    //   const parts = rawName.split('.');
+    //   const lgParts = parts.length;
+    //   if (lgParts === 1) {
+    //     const str = parts[0];
+    //     const lg = str.length;
+    //     return str.slice(0, lg - 17);
+    //   } else {
+    //     const lastTwo = parts[lgParts - 2];
+    //     const lg = lastTwo.length;
+    //     parts[lgParts - 2] = lastTwo.slice(0, lg - 17);
+    //     return parts.join('.');
+    //   }
+    // }
+    // return '';
   }
 
   toFirst= () => {
